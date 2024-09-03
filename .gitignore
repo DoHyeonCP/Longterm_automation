@@ -1,4 +1,4 @@
-plan.xlsx
+/plan.xlsx
 /plan.csv
 /tag.xlsx
 /tag.csv
@@ -10,3 +10,5 @@ plan.xlsx
 /휴일서비스.csv
 /시간미달.csv
 /에러노트.csv
+/error/*
+/source/*
