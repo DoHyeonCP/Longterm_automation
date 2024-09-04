@@ -77,3 +77,20 @@ class Catch:
         holiday_df = holiday_df[['수급자명', '요양보호사명', '날짜', '시작시간', '종료시간', ]]
         holiday_df.to_csv('error/공휴일.csv', index=False, encoding='utf-8-sig')
         print("공휴일 데이터 추출 완료")
+        
+    # first success
+    def check_multiple_services(self):
+        # Group by 날짜 and 수급자명 and count the entries
+        counts = self.plan_df.groupby(['날짜', '수급자명']).size()
+        # Identify days with more than one service
+        multi_service_dates = counts[counts > 1].reset_index()[['날짜', '수급자명']]
+        
+        # Flag entries that are second services
+        self.plan_df['2회서비스'] = self.plan_df.apply(
+            lambda x: any((x['날짜'] == row['날짜']) and (x['수급자명'] == row['수급자명']) for _, row in multi_service_dates.iterrows()),
+            axis=1
+        )
+        # Export these to a separate CSV
+        second_service_df = self.plan_df[self.plan_df['2회서비스']]
+        second_service_df.to_csv('error/2회서비스.csv', index=False, encoding='utf-8-sig')
+        print("2회서비스 데이터 추출 완료")
