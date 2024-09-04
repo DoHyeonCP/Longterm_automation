@@ -8,8 +8,8 @@ sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding = 'utf-8')
 
 catch = Catch('source/plan.csv', 'source/tag.csv')
 
-catch.check_multiple_services()
 catch.transmission_error()
 catch.wrong_tag()
 catch.overtime()
 catch.holiday()
+catch.one_tag()
