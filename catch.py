@@ -2,6 +2,7 @@
 import sys
 import io
 import pandas as pd
+from holidayskr import is_holiday
 
 sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding = 'utf-8')
 sys.stderr = io.TextIOWrapper(sys.stderr.detach(), encoding = 'utf-8')
@@ -70,4 +71,9 @@ class Catch:
         
         print("시간초과 완료")
         
-        
+    def holiday(self):
+        self.plan_df['공휴일'] = self.plan_df['날짜'].apply(lambda x: is_holiday(x.strftime('%Y-%m-%d')) or x.weekday() == 6)
+        holiday_df = self.plan_df[(self.plan_df['공휴일']) & (self.plan_df['가족여부'] == 'N')]
+        holiday_df = holiday_df[['수급자명', '요양보호사명', '날짜', '시작시간', '종료시간', ]]
+        holiday_df.to_csv('error/공휴일.csv', index=False, encoding='utf-8-sig')
+        print("공휴일 데이터 추출 완료")
